@@ -7,14 +7,8 @@ function blogPosts (ourDB = db) {
 }
 
 function createBlogPost (obj, ourDB = db) {
-  ourDB('posts').insert(obj)
-    .then(result => {
-      return getBlog(result[0], ourDB)
-    })
-    .catch(err => {
-      console.log(err)
-      return null
-    })
+  return ourDB('posts')
+    .insert(obj)
 }
 
 function getBlog (id, ourDB = db) {

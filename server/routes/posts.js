@@ -19,17 +19,33 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
-  const blog = req.body
-  db.createBlogPost(blog)
-    .then(result => {
-      res.json(result)
-      return null
-    })
-    .catch(err => {
-      console.log(err)
-      return null
-    })
+router.post('/', async (req, res) => {
+  // using then/catch
+  //   try {
+  //     const locationInfo = {
+  //         "name": req.body.name,
+  //         "description": req.body.description
+  //     }
+
+  //     const noOfAffectedRows = await db.addNewLocation(locationInfo)
+  //     console.log(noOfAffectedRows, ' records affected');
+  //     res.redirect('/locations')
+
+  // } catch (error) {
+  //     res.render('error', { message: error.message })
+  // }
+
+  // using async/await
+  try {
+    const blog = req.body
+    const arrOfId = await db.createBlogPost(blog)
+
+    const post = await db.getBlog(arrOfId[0])
+
+    res.json(post)
+  } catch (error) {
+    res.render('error', { message: error.message })
+  }
 })
 
 module.exports = router
