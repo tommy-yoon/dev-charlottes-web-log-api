@@ -9,7 +9,8 @@ router.get('/', (req, res) => {
   console.log(req)
   db.blogPosts()
     .then(result => {
-      console.log(result)
+      // const resultJson = JSON.parse(result)
+      res.json(result)
       return null
     })
     .catch(err => {
