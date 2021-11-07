@@ -19,4 +19,17 @@ router.get('/', (req, res) => {
     })
 })
 
+router.post('/', (req, res) => {
+  const blog = req.body
+  db.createBlogPost(blog)
+    .then(result => {
+      res.json(result)
+      return null
+    })
+    .catch(err => {
+      console.log(err)
+      return null
+    })
+})
+
 module.exports = router
