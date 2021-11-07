@@ -18,8 +18,23 @@ function getBlog (id, ourDB = db) {
     .first()
 }
 
+function updateComment (id, obj, ourDB = db) {
+  return ourDB('comments')
+    .update(obj)
+    .where('id', id)
+}
+
+function getComment (id, ourDB = db) {
+  return ourDB('comments')
+    .select()
+    .where('id', id)
+    .first()
+}
+
 module.exports = {
   blogPosts,
   createBlogPost,
-  getBlog
+  getBlog,
+  updateComment,
+  getComment
 }

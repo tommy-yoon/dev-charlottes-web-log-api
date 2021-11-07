@@ -44,7 +44,8 @@ router.post('/', async (req, res) => {
 
     res.json(post)
   } catch (error) {
-    res.render('error', { message: error.message })
+    console.log(error)
+    return null
   }
 })
 
