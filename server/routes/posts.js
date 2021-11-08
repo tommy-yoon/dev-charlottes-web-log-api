@@ -49,4 +49,21 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.patch('/:id', async (req, res) => {
+  try {
+    const postObj = {
+      id: req.body.id,
+      title: req.body.title,
+      paragraphs: req.body.paragraphs
+    }
+    await db.updatePost(req.params.id, postObj)
+    const result = await db.getBlog(req.body.id)
+    res.json(result)
+    return null
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+})
+
 module.exports = router

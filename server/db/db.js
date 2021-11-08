@@ -31,10 +31,17 @@ function getComment (id, ourDB = db) {
     .first()
 }
 
+function updatePost (id, obj, ourDB = db) {
+  return ourDB('posts')
+    .update(obj)
+    .where('id', id)
+}
+
 module.exports = {
   blogPosts,
   createBlogPost,
   getBlog,
   updateComment,
-  getComment
+  getComment,
+  updatePost
 }
