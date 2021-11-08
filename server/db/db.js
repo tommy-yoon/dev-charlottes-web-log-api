@@ -43,6 +43,11 @@ function getPostComments (postId, ourDB = db) {
     .where('post_id', postId)
 }
 
+function postComment (postId, comment, ourDB = db) {
+  return ourDB('comments')
+    .insert({ post_id: postId, comment: comment })
+}
+
 module.exports = {
   blogPosts,
   createBlogPost,
@@ -50,5 +55,6 @@ module.exports = {
   updateComment,
   getComment,
   updatePost,
-  getPostComments
+  getPostComments,
+  postComment
 }

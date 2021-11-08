@@ -5,47 +5,32 @@ const db = require('../db/db')
 const router = express.Router()
 
 // put routes here
-router.get('/', (req, res) => {
-  console.log(req)
-  db.blogPosts()
-    .then(result => {
-      // const resultJson = JSON.parse(result)
-      res.json(result)
-      return null
+router.get('/', async (req, res) => {
+  try {
+    const result = await db.blogPosts()
+    const posts = result.map((obj) => {
+      return {
+        id: obj.id,
+        title: obj.title,
+        dateCreated: obj.date_created,
+        commentCount: obj.comment_count,
+        paragraphs: JSON.parse(obj.paragraphs)
+      }
     })
-    .catch(err => {
-      console.log(err)
-      return null
-    })
+    res.json(posts)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 })
 
 router.post('/', async (req, res) => {
-  // using then/catch
-  //   try {
-  //     const locationInfo = {
-  //         "name": req.body.name,
-  //         "description": req.body.description
-  //     }
-
-  //     const noOfAffectedRows = await db.addNewLocation(locationInfo)
-  //     console.log(noOfAffectedRows, ' records affected');
-  //     res.redirect('/locations')
-
-  // } catch (error) {
-  //     res.render('error', { message: error.message })
-  // }
-
-  // using async/await
   try {
     const blog = req.body
     const arrOfId = await db.createBlogPost(blog)
-
     const post = await db.getBlog(arrOfId[0])
-
     res.json(post)
   } catch (error) {
-    console.log(error)
-    return null
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -59,10 +44,8 @@ router.patch('/:id', async (req, res) => {
     await db.updatePost(req.params.id, postObj)
     const result = await db.getBlog(req.body.id)
     res.json(result)
-    return null
-  } catch (err) {
-    console.log(err)
-    return null
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -78,10 +61,27 @@ router.get('/:postId/comments', async (req, res) => {
       }
     })
     res.json(data)
-    return null
-  } catch (err) {
-    console.log(err)
-    return null
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+router.post('/:postId/comments', async (req, res) => {
+  try {
+    const postId = req.params.postId
+    const comment = req.body.comment
+    const commentIdArr = await db.postComment(postId, comment)
+
+    const result = await db.getComment(commentIdArr[0])
+    const commentObj = {
+      id: result.id,
+      postId: result.post_id,
+      datePosted: result.date_posted,
+      comment: result.comment
+    }
+    res.json(commentObj)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 })
 
