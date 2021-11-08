@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
     })
     res.json(posts)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 })
@@ -40,6 +41,7 @@ router.post('/', async (req, res) => {
     }
     res.json(post)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 })
@@ -62,6 +64,7 @@ router.patch('/:id', async (req, res) => {
     }
     res.json(post)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 })
@@ -79,6 +82,7 @@ router.get('/:postId/comments', async (req, res) => {
     })
     res.json(comments)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 })
@@ -98,6 +102,7 @@ router.post('/:postId/comments', async (req, res) => {
     }
     res.json(commentObj)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 })
