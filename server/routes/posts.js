@@ -25,7 +25,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const blog = req.body
+    const blog = {
+      title: req.body.title,
+      paragraphs: JSON.stringify(req.body.paragraphs)
+    }
     const arrOfId = await db.createBlogPost(blog)
     const post = await db.getBlog(arrOfId[0])
     res.json(post)
