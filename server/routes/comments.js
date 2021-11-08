@@ -6,10 +6,14 @@ const router = express.Router()
 
 // put routes here
 router.patch('/:commentId', async (req, res) => {
-  const body = req.body
-  const id = req.params.comemntId
+  const comment = {
+    id: req.body.id,
+    post_id: req.body.postId,
+    comment: req.body.comment
+  }
+  const id = req.params.commentId
   try {
-    await db.updateComment(id, body)
+    await db.updateComment(id, comment)
     const result = await db.getComment(id)
     res.json(result)
   } catch (err) {
