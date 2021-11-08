@@ -66,4 +66,23 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
+router.get('/:postId/comments', async (req, res) => {
+  try {
+    const result = await db.getPostComments(req.params.postId)
+    const data = result.map(obj => {
+      return {
+        id: obj.id,
+        postId: obj.post_id,
+        datePosted: obj.date_posted,
+        comment: obj.comment
+      }
+    })
+    res.json(data)
+    return null
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+})
+
 module.exports = router

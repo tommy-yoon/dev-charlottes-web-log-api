@@ -37,11 +37,18 @@ function updatePost (id, obj, ourDB = db) {
     .where('id', id)
 }
 
+function getPostComments (postId, ourDB = db) {
+  return ourDB('comments')
+    .select()
+    .where('post_id', postId)
+}
+
 module.exports = {
   blogPosts,
   createBlogPost,
   getBlog,
   updateComment,
   getComment,
-  updatePost
+  updatePost,
+  getPostComments
 }
