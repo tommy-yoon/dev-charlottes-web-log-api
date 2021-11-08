@@ -48,6 +48,18 @@ function postComment (postId, comment, ourDB = db) {
     .insert({ post_id: postId, comment: comment })
 }
 
+function deleteComment (id, ourDB = db) {
+  return ourDB('comments')
+    .del()
+    .where('id', id)
+}
+
+function deletePost (id, ourDB = db) {
+  return ourDB('posts')
+    .del()
+    .where('id', id)
+}
+
 module.exports = {
   blogPosts,
   createBlogPost,
@@ -56,5 +68,7 @@ module.exports = {
   getComment,
   updatePost,
   getPostComments,
-  postComment
+  postComment,
+  deleteComment,
+  deletePost
 }

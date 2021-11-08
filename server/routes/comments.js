@@ -22,4 +22,15 @@ router.patch('/:commentId', async (req, res) => {
   }
 })
 
+router.delete('/:commentId', async (req, res) => {
+  try {
+    const id = req.params.commentId
+    const result = await db.deleteComment(id)
+    res.json(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 module.exports = router
