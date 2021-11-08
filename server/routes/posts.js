@@ -30,7 +30,14 @@ router.post('/', async (req, res) => {
       paragraphs: JSON.stringify(req.body.paragraphs)
     }
     const arrOfId = await db.createBlogPost(blog)
-    const post = await db.getBlog(arrOfId[0])
+    const result = await db.getBlog(arrOfId[0])
+    const post = {
+      id: result.id,
+      title: result.title,
+      dateCreated: result.date_created,
+      commentCount: result.comment_count,
+      paragraphs: JSON.parse(result.paragraphs)
+    }
     res.json(post)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -42,11 +49,18 @@ router.patch('/:id', async (req, res) => {
     const postObj = {
       id: req.body.id,
       title: req.body.title,
-      paragraphs: req.body.paragraphs
+      paragraphs: JSON.stringify(req.body.paragraphs)
     }
     await db.updatePost(req.params.id, postObj)
     const result = await db.getBlog(req.body.id)
-    res.json(result)
+    const post = {
+      id: result.id,
+      title: result.title,
+      dateCreated: result.date_created,
+      commentCount: result.comment_count,
+      paragraphs: JSON.parse(result.paragraphs)
+    }
+    res.json(post)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
@@ -55,7 +69,7 @@ router.patch('/:id', async (req, res) => {
 router.get('/:postId/comments', async (req, res) => {
   try {
     const result = await db.getPostComments(req.params.postId)
-    const data = result.map(obj => {
+    const comments = result.map(obj => {
       return {
         id: obj.id,
         postId: obj.post_id,
@@ -63,7 +77,7 @@ router.get('/:postId/comments', async (req, res) => {
         comment: obj.comment
       }
     })
-    res.json(data)
+    res.json(comments)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
