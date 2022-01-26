@@ -14,7 +14,7 @@
     "knex": "knex --knexfile server/db/knexfile.js",
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint . --fix",
-    "start": "node server"
+    "start": "npm run build && node server"
   },
   "keywords": [
     "fullstack"
